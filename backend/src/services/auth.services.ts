@@ -1,16 +1,7 @@
 import bcrypt from "bcryptjs";
 import type { FastifyInstance } from "fastify";
-import { error } from "node:console";
-type LoginInput = {
-  email: string;
-  password: string;
-};
-type signUpInput = {
-  email: string;
-  password: string;
-  role: string;
-  name: string;
-};
+import type { SignUpInput, LoginInput } from "../schemas/auth.schema.js";
+
 export const loginUser = async (input: LoginInput, app: FastifyInstance) => {
   const user = await app.prisma.user.findUnique({
     where: {
@@ -45,7 +36,7 @@ export const loginUser = async (input: LoginInput, app: FastifyInstance) => {
     },
   };
 };
-export const signupUser = async (input: signUpInput, app: FastifyInstance) => {
+export const signupUser = async (input: SignUpInput, app: FastifyInstance) => {
   const emailExist = await app.prisma.user.findUnique({
     where: {
       email: input.email,

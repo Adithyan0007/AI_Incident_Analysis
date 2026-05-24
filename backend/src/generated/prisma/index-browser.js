@@ -129,9 +129,60 @@ exports.Prisma.UserScalarFieldEnum = {
   createdAt: 'createdAt'
 };
 
+exports.Prisma.IncidentScalarFieldEnum = {
+  id: 'id',
+  title: 'title',
+  description: 'description',
+  severity: 'severity',
+  status: 'status',
+  createdAt: 'createdAt',
+  userId: 'userId'
+};
+
+exports.Prisma.LogScalarFieldEnum = {
+  id: 'id',
+  service: 'service',
+  level: 'level',
+  message: 'message',
+  timestamp: 'timestamp'
+};
+
+exports.Prisma.MetricScalarFieldEnum = {
+  id: 'id',
+  service: 'service',
+  metricName: 'metricName',
+  value: 'value',
+  timestamp: 'timestamp'
+};
+
+exports.Prisma.DeploymentScalarFieldEnum = {
+  id: 'id',
+  service: 'service',
+  version: 'version',
+  status: 'status',
+  commitHash: 'commitHash',
+  deployedAt: 'deployedAt'
+};
+
+exports.Prisma.AgentRunScalarFieldEnum = {
+  id: 'id',
+  query: 'query',
+  intent: 'intent',
+  plan: 'plan',
+  result: 'result',
+  status: 'status',
+  createdAt: 'createdAt',
+  userId: 'userId'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
+};
+
+exports.Prisma.NullableJsonNullValueInput = {
+  DbNull: Prisma.DbNull,
+  JsonNull: Prisma.JsonNull
 };
 
 exports.Prisma.QueryMode = {
@@ -139,9 +190,25 @@ exports.Prisma.QueryMode = {
   insensitive: 'insensitive'
 };
 
+exports.Prisma.NullsOrder = {
+  first: 'first',
+  last: 'last'
+};
+
+exports.Prisma.JsonNullValueFilter = {
+  DbNull: Prisma.DbNull,
+  JsonNull: Prisma.JsonNull,
+  AnyNull: Prisma.AnyNull
+};
+
 
 exports.Prisma.ModelName = {
-  User: 'User'
+  User: 'User',
+  Incident: 'Incident',
+  Log: 'Log',
+  Metric: 'Metric',
+  Deployment: 'Deployment',
+  AgentRun: 'AgentRun'
 };
 
 /**

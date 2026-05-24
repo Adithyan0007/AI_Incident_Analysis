@@ -19,4 +19,57 @@ model User {
   password  String
   role      String   @default("user")
   createdAt DateTime @default(now())
+
+  incidents Incident[]
+  agentRuns AgentRun[]
+}
+
+model Incident {
+  id          String   @id @default(cuid())
+  title       String
+  description String?
+  severity    String
+  status      String   @default("active")
+  createdAt   DateTime @default(now())
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id])
+}
+
+model Log {
+  id        String   @id @default(cuid())
+  service   String
+  level     String
+  message   String
+  timestamp DateTime @default(now())
+}
+
+model Metric {
+  id         String   @id @default(cuid())
+  service    String
+  metricName String
+  value      Float
+  timestamp  DateTime @default(now())
+}
+
+model Deployment {
+  id         String   @id @default(cuid())
+  service    String
+  version    String
+  status     String
+  commitHash String?
+  deployedAt DateTime @default(now())
+}
+
+model AgentRun {
+  id        String   @id @default(cuid())
+  query     String
+  intent    String?
+  plan      Json?
+  result    Json?
+  status    String   @default("pending")
+  createdAt DateTime @default(now())
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id])
 }
