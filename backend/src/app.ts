@@ -5,6 +5,7 @@ import { authUser } from "./routes/auth.routes.js";
 import { prismaPlugin } from "./plugins/prisma.js";
 import { authenticate } from "./plugins/authenticate.js";
 import { DeploymentRoute } from "./routes/deployment.routes.js";
+import { metricRoute } from "./routes/metric.routes.js";
 
 import {
   validatorCompiler,
@@ -37,3 +38,4 @@ app.register(authUser, { prefix: "/auth" });
 app.register(incidentRoute, { prefix: "/incident" });
 app.register(LogRoute, { prefix: "/log" });
 app.register(DeploymentRoute, { prefix: "/deployments" });
+app.register(metricRoute, { prefix: "/metric" });

@@ -29,7 +29,8 @@ export const addIncident = async (
 
 export const getIncident = async (req: FastifyRequest, reply: FastifyReply) => {
   try {
-    const data = await getIncidentService(req.server);
+    const loggedInUser = req.user;
+    const data = await getIncidentService(req.server, loggedInUser.userId);
     reply.send(data);
   } catch (error) {
     if (error instanceof Error) {
