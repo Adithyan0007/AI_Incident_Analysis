@@ -15,6 +15,6 @@ export const incidentRoute = async (app: FastifyInstance) => {
       { schema: addIncidentSchema, preHandler: [app.authenticate] },
       addIncident,
     );
-  app.get("/", getIncident);
-  app.get("/:id", getIncidentById);
+  app.get("/", { preHandler: [app.authenticate] }, getIncident);
+  app.get("/:id", { preHandler: [app.authenticate] }, getIncidentById);
 };

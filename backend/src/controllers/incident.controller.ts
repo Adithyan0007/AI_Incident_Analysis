@@ -20,7 +20,7 @@ export const addIncident = async (
     reply.send(result);
   } catch (error) {
     if (error instanceof Error) {
-      return reply.status(401).send({
+      return reply.status(400).send({
         message: error.message,
       });
     }

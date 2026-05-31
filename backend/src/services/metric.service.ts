@@ -14,6 +14,7 @@ export const postMetricService = async (
         service: input.service,
         metricName: input.metricName,
         value: input.value,
+        timestamp: input.timestamp ? new Date(input.timestamp) : new Date(),
       },
     });
     return data;
@@ -37,6 +38,9 @@ export const getMetricService = async (
     }
     const options: Prisma.MetricFindManyArgs = {
       where,
+      orderBy: {
+        timestamp: "desc",
+      },
     };
     if (query.limit) {
       options.take = query.limit;

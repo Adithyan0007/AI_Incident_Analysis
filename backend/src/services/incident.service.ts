@@ -22,15 +22,23 @@ export const addIncidentService = async (
     throw new Error(errorMessage);
   }
 };
-export const getIncidentService = async (app: FastifyInstance) => {
+export const getIncidentService = async (
+  app: FastifyInstance,
+  userId: string,
+) => {
   try {
     const data = await app.prisma.incident.findMany({
+      where: {
+        userId,
+      },
       select: {
         id: true,
         title: true,
         description: true,
         severity: true,
+        status: true,
         userId: true,
+        createdAt: true,
       },
     });
     return data;

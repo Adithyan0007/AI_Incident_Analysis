@@ -13,12 +13,17 @@ import {
 export const metricRoute = async (app: FastifyInstance) => {
   app
     .withTypeProvider<ZodTypeProvider>()
-    .post("/", { schema: metricSchema }, postMetricController);
-  app
-    .withTypeProvider<ZodTypeProvider>()
-    .get(
+    .post(
       "/",
-      { schema: { querystring: getMetricQuerySchema } },
-      getMetricController,
+      { schema: metricSchema, preHandler: [app.authenticate] },
+      postMetricController,
     );
+  app.withTypeProvider<ZodTypeProvider>().get(
+    "/",
+    {
+      schema: { querystring: getMetricQuerySchema },
+      preHandler: [app.authenticate],
+    },
+    getMetricController,
+  );
 };

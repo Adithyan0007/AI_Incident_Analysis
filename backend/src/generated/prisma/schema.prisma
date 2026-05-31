@@ -29,7 +29,7 @@ model Incident {
   title       String
   description String?
   severity    String
-  status      String   @default("active")
+  status      String   @default("OPEN")
   createdAt   DateTime @default(now())
 
   userId String
