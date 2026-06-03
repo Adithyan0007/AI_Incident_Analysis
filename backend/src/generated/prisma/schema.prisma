@@ -34,6 +34,8 @@ model Incident {
 
   userId String
   user   User   @relation(fields: [userId], references: [id])
+
+  agentRuns AgentRun[]
 }
 
 model Log {
@@ -72,4 +74,7 @@ model AgentRun {
 
   userId String
   user   User   @relation(fields: [userId], references: [id])
+
+  incidentId String
+  incident   Incident @relation(fields: [incidentId], references: [id])
 }

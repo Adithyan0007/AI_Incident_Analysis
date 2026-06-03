@@ -172,7 +172,8 @@ exports.Prisma.AgentRunScalarFieldEnum = {
   result: 'result',
   status: 'status',
   createdAt: 'createdAt',
-  userId: 'userId'
+  userId: 'userId',
+  incidentId: 'incidentId'
 };
 
 exports.Prisma.SortOrder = {

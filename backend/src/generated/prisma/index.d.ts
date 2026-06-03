@@ -1357,6 +1357,37 @@ export namespace Prisma {
 
 
   /**
+   * Count Type IncidentCountOutputType
+   */
+
+  export type IncidentCountOutputType = {
+    agentRuns: number
+  }
+
+  export type IncidentCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    agentRuns?: boolean | IncidentCountOutputTypeCountAgentRunsArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * IncidentCountOutputType without action
+   */
+  export type IncidentCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the IncidentCountOutputType
+     */
+    select?: IncidentCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * IncidentCountOutputType without action
+   */
+  export type IncidentCountOutputTypeCountAgentRunsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: AgentRunWhereInput
+  }
+
+
+  /**
    * Models
    */
 
@@ -2657,6 +2688,8 @@ export namespace Prisma {
     createdAt?: boolean
     userId?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
+    agentRuns?: boolean | Incident$agentRunsArgs<ExtArgs>
+    _count?: boolean | IncidentCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["incident"]>
 
   export type IncidentSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -2694,6 +2727,8 @@ export namespace Prisma {
   export type IncidentOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "title" | "description" | "severity" | "status" | "createdAt" | "userId", ExtArgs["result"]["incident"]>
   export type IncidentInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
+    agentRuns?: boolean | Incident$agentRunsArgs<ExtArgs>
+    _count?: boolean | IncidentCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type IncidentIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
@@ -2706,6 +2741,7 @@ export namespace Prisma {
     name: "Incident"
     objects: {
       user: Prisma.$UserPayload<ExtArgs>
+      agentRuns: Prisma.$AgentRunPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -3110,6 +3146,7 @@ export namespace Prisma {
   export interface Prisma__IncidentClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    agentRuns<T extends Incident$agentRunsArgs<ExtArgs> = {}>(args?: Subset<T, Incident$agentRunsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AgentRunPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -3544,6 +3581,30 @@ export namespace Prisma {
      * Limit how many Incidents to delete.
      */
     limit?: number
+  }
+
+  /**
+   * Incident.agentRuns
+   */
+  export type Incident$agentRunsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AgentRun
+     */
+    select?: AgentRunSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AgentRun
+     */
+    omit?: AgentRunOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AgentRunInclude<ExtArgs> | null
+    where?: AgentRunWhereInput
+    orderBy?: AgentRunOrderByWithRelationInput | AgentRunOrderByWithRelationInput[]
+    cursor?: AgentRunWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: AgentRunScalarFieldEnum | AgentRunScalarFieldEnum[]
   }
 
   /**
@@ -6629,6 +6690,7 @@ export namespace Prisma {
     status: string | null
     createdAt: Date | null
     userId: string | null
+    incidentId: string | null
   }
 
   export type AgentRunMaxAggregateOutputType = {
@@ -6638,6 +6700,7 @@ export namespace Prisma {
     status: string | null
     createdAt: Date | null
     userId: string | null
+    incidentId: string | null
   }
 
   export type AgentRunCountAggregateOutputType = {
@@ -6649,6 +6712,7 @@ export namespace Prisma {
     status: number
     createdAt: number
     userId: number
+    incidentId: number
     _all: number
   }
 
@@ -6660,6 +6724,7 @@ export namespace Prisma {
     status?: true
     createdAt?: true
     userId?: true
+    incidentId?: true
   }
 
   export type AgentRunMaxAggregateInputType = {
@@ -6669,6 +6734,7 @@ export namespace Prisma {
     status?: true
     createdAt?: true
     userId?: true
+    incidentId?: true
   }
 
   export type AgentRunCountAggregateInputType = {
@@ -6680,6 +6746,7 @@ export namespace Prisma {
     status?: true
     createdAt?: true
     userId?: true
+    incidentId?: true
     _all?: true
   }
 
@@ -6764,6 +6831,7 @@ export namespace Prisma {
     status: string
     createdAt: Date
     userId: string
+    incidentId: string
     _count: AgentRunCountAggregateOutputType | null
     _min: AgentRunMinAggregateOutputType | null
     _max: AgentRunMaxAggregateOutputType | null
@@ -6792,7 +6860,9 @@ export namespace Prisma {
     status?: boolean
     createdAt?: boolean
     userId?: boolean
+    incidentId?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
+    incident?: boolean | IncidentDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["agentRun"]>
 
   export type AgentRunSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -6804,7 +6874,9 @@ export namespace Prisma {
     status?: boolean
     createdAt?: boolean
     userId?: boolean
+    incidentId?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
+    incident?: boolean | IncidentDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["agentRun"]>
 
   export type AgentRunSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -6816,7 +6888,9 @@ export namespace Prisma {
     status?: boolean
     createdAt?: boolean
     userId?: boolean
+    incidentId?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
+    incident?: boolean | IncidentDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["agentRun"]>
 
   export type AgentRunSelectScalar = {
@@ -6828,23 +6902,28 @@ export namespace Prisma {
     status?: boolean
     createdAt?: boolean
     userId?: boolean
+    incidentId?: boolean
   }
 
-  export type AgentRunOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "query" | "intent" | "plan" | "result" | "status" | "createdAt" | "userId", ExtArgs["result"]["agentRun"]>
+  export type AgentRunOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "query" | "intent" | "plan" | "result" | "status" | "createdAt" | "userId" | "incidentId", ExtArgs["result"]["agentRun"]>
   export type AgentRunInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
+    incident?: boolean | IncidentDefaultArgs<ExtArgs>
   }
   export type AgentRunIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
+    incident?: boolean | IncidentDefaultArgs<ExtArgs>
   }
   export type AgentRunIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
+    incident?: boolean | IncidentDefaultArgs<ExtArgs>
   }
 
   export type $AgentRunPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "AgentRun"
     objects: {
       user: Prisma.$UserPayload<ExtArgs>
+      incident: Prisma.$IncidentPayload<ExtArgs>
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -6855,6 +6934,7 @@ export namespace Prisma {
       status: string
       createdAt: Date
       userId: string
+      incidentId: string
     }, ExtArgs["result"]["agentRun"]>
     composites: {}
   }
@@ -7250,6 +7330,7 @@ export namespace Prisma {
   export interface Prisma__AgentRunClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    incident<T extends IncidentDefaultArgs<ExtArgs> = {}>(args?: Subset<T, IncidentDefaultArgs<ExtArgs>>): Prisma__IncidentClient<$Result.GetResult<Prisma.$IncidentPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -7287,6 +7368,7 @@ export namespace Prisma {
     readonly status: FieldRef<"AgentRun", 'String'>
     readonly createdAt: FieldRef<"AgentRun", 'DateTime'>
     readonly userId: FieldRef<"AgentRun", 'String'>
+    readonly incidentId: FieldRef<"AgentRun", 'String'>
   }
     
 
@@ -7787,7 +7869,8 @@ export namespace Prisma {
     result: 'result',
     status: 'status',
     createdAt: 'createdAt',
-    userId: 'userId'
+    userId: 'userId',
+    incidentId: 'incidentId'
   };
 
   export type AgentRunScalarFieldEnum = (typeof AgentRunScalarFieldEnum)[keyof typeof AgentRunScalarFieldEnum]
@@ -7987,6 +8070,7 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"Incident"> | Date | string
     userId?: StringFilter<"Incident"> | string
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
+    agentRuns?: AgentRunListRelationFilter
   }
 
   export type IncidentOrderByWithRelationInput = {
@@ -7998,6 +8082,7 @@ export namespace Prisma {
     createdAt?: SortOrder
     userId?: SortOrder
     user?: UserOrderByWithRelationInput
+    agentRuns?: AgentRunOrderByRelationAggregateInput
   }
 
   export type IncidentWhereUniqueInput = Prisma.AtLeast<{
@@ -8012,6 +8097,7 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"Incident"> | Date | string
     userId?: StringFilter<"Incident"> | string
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
+    agentRuns?: AgentRunListRelationFilter
   }, "id">
 
   export type IncidentOrderByWithAggregationInput = {
@@ -8215,7 +8301,9 @@ export namespace Prisma {
     status?: StringFilter<"AgentRun"> | string
     createdAt?: DateTimeFilter<"AgentRun"> | Date | string
     userId?: StringFilter<"AgentRun"> | string
+    incidentId?: StringFilter<"AgentRun"> | string
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
+    incident?: XOR<IncidentScalarRelationFilter, IncidentWhereInput>
   }
 
   export type AgentRunOrderByWithRelationInput = {
@@ -8227,7 +8315,9 @@ export namespace Prisma {
     status?: SortOrder
     createdAt?: SortOrder
     userId?: SortOrder
+    incidentId?: SortOrder
     user?: UserOrderByWithRelationInput
+    incident?: IncidentOrderByWithRelationInput
   }
 
   export type AgentRunWhereUniqueInput = Prisma.AtLeast<{
@@ -8242,7 +8332,9 @@ export namespace Prisma {
     status?: StringFilter<"AgentRun"> | string
     createdAt?: DateTimeFilter<"AgentRun"> | Date | string
     userId?: StringFilter<"AgentRun"> | string
+    incidentId?: StringFilter<"AgentRun"> | string
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
+    incident?: XOR<IncidentScalarRelationFilter, IncidentWhereInput>
   }, "id">
 
   export type AgentRunOrderByWithAggregationInput = {
@@ -8254,6 +8346,7 @@ export namespace Prisma {
     status?: SortOrder
     createdAt?: SortOrder
     userId?: SortOrder
+    incidentId?: SortOrder
     _count?: AgentRunCountOrderByAggregateInput
     _max?: AgentRunMaxOrderByAggregateInput
     _min?: AgentRunMinOrderByAggregateInput
@@ -8271,6 +8364,7 @@ export namespace Prisma {
     status?: StringWithAggregatesFilter<"AgentRun"> | string
     createdAt?: DateTimeWithAggregatesFilter<"AgentRun"> | Date | string
     userId?: StringWithAggregatesFilter<"AgentRun"> | string
+    incidentId?: StringWithAggregatesFilter<"AgentRun"> | string
   }
 
   export type UserCreateInput = {
@@ -8352,6 +8446,7 @@ export namespace Prisma {
     status?: string
     createdAt?: Date | string
     user: UserCreateNestedOneWithoutIncidentsInput
+    agentRuns?: AgentRunCreateNestedManyWithoutIncidentInput
   }
 
   export type IncidentUncheckedCreateInput = {
@@ -8362,6 +8457,7 @@ export namespace Prisma {
     status?: string
     createdAt?: Date | string
     userId: string
+    agentRuns?: AgentRunUncheckedCreateNestedManyWithoutIncidentInput
   }
 
   export type IncidentUpdateInput = {
@@ -8372,6 +8468,7 @@ export namespace Prisma {
     status?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneRequiredWithoutIncidentsNestedInput
+    agentRuns?: AgentRunUpdateManyWithoutIncidentNestedInput
   }
 
   export type IncidentUncheckedUpdateInput = {
@@ -8382,6 +8479,7 @@ export namespace Prisma {
     status?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     userId?: StringFieldUpdateOperationsInput | string
+    agentRuns?: AgentRunUncheckedUpdateManyWithoutIncidentNestedInput
   }
 
   export type IncidentCreateManyInput = {
@@ -8597,6 +8695,7 @@ export namespace Prisma {
     status?: string
     createdAt?: Date | string
     user: UserCreateNestedOneWithoutAgentRunsInput
+    incident: IncidentCreateNestedOneWithoutAgentRunsInput
   }
 
   export type AgentRunUncheckedCreateInput = {
@@ -8608,6 +8707,7 @@ export namespace Prisma {
     status?: string
     createdAt?: Date | string
     userId: string
+    incidentId: string
   }
 
   export type AgentRunUpdateInput = {
@@ -8619,6 +8719,7 @@ export namespace Prisma {
     status?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneRequiredWithoutAgentRunsNestedInput
+    incident?: IncidentUpdateOneRequiredWithoutAgentRunsNestedInput
   }
 
   export type AgentRunUncheckedUpdateInput = {
@@ -8630,6 +8731,7 @@ export namespace Prisma {
     status?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     userId?: StringFieldUpdateOperationsInput | string
+    incidentId?: StringFieldUpdateOperationsInput | string
   }
 
   export type AgentRunCreateManyInput = {
@@ -8641,6 +8743,7 @@ export namespace Prisma {
     status?: string
     createdAt?: Date | string
     userId: string
+    incidentId: string
   }
 
   export type AgentRunUpdateManyMutationInput = {
@@ -8662,6 +8765,7 @@ export namespace Prisma {
     status?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     userId?: StringFieldUpdateOperationsInput | string
+    incidentId?: StringFieldUpdateOperationsInput | string
   }
 
   export type StringFilter<$PrismaModel = never> = {
@@ -8975,6 +9079,11 @@ export namespace Prisma {
     not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
   }
 
+  export type IncidentScalarRelationFilter = {
+    is?: IncidentWhereInput
+    isNot?: IncidentWhereInput
+  }
+
   export type AgentRunCountOrderByAggregateInput = {
     id?: SortOrder
     query?: SortOrder
@@ -8984,6 +9093,7 @@ export namespace Prisma {
     status?: SortOrder
     createdAt?: SortOrder
     userId?: SortOrder
+    incidentId?: SortOrder
   }
 
   export type AgentRunMaxOrderByAggregateInput = {
@@ -8993,6 +9103,7 @@ export namespace Prisma {
     status?: SortOrder
     createdAt?: SortOrder
     userId?: SortOrder
+    incidentId?: SortOrder
   }
 
   export type AgentRunMinOrderByAggregateInput = {
@@ -9002,6 +9113,7 @@ export namespace Prisma {
     status?: SortOrder
     createdAt?: SortOrder
     userId?: SortOrder
+    incidentId?: SortOrder
   }
   export type JsonNullableWithAggregatesFilter<$PrismaModel = never> =
     | PatchUndefined<
@@ -9128,6 +9240,20 @@ export namespace Prisma {
     connect?: UserWhereUniqueInput
   }
 
+  export type AgentRunCreateNestedManyWithoutIncidentInput = {
+    create?: XOR<AgentRunCreateWithoutIncidentInput, AgentRunUncheckedCreateWithoutIncidentInput> | AgentRunCreateWithoutIncidentInput[] | AgentRunUncheckedCreateWithoutIncidentInput[]
+    connectOrCreate?: AgentRunCreateOrConnectWithoutIncidentInput | AgentRunCreateOrConnectWithoutIncidentInput[]
+    createMany?: AgentRunCreateManyIncidentInputEnvelope
+    connect?: AgentRunWhereUniqueInput | AgentRunWhereUniqueInput[]
+  }
+
+  export type AgentRunUncheckedCreateNestedManyWithoutIncidentInput = {
+    create?: XOR<AgentRunCreateWithoutIncidentInput, AgentRunUncheckedCreateWithoutIncidentInput> | AgentRunCreateWithoutIncidentInput[] | AgentRunUncheckedCreateWithoutIncidentInput[]
+    connectOrCreate?: AgentRunCreateOrConnectWithoutIncidentInput | AgentRunCreateOrConnectWithoutIncidentInput[]
+    createMany?: AgentRunCreateManyIncidentInputEnvelope
+    connect?: AgentRunWhereUniqueInput | AgentRunWhereUniqueInput[]
+  }
+
   export type NullableStringFieldUpdateOperationsInput = {
     set?: string | null
   }
@@ -9138,6 +9264,34 @@ export namespace Prisma {
     upsert?: UserUpsertWithoutIncidentsInput
     connect?: UserWhereUniqueInput
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutIncidentsInput, UserUpdateWithoutIncidentsInput>, UserUncheckedUpdateWithoutIncidentsInput>
+  }
+
+  export type AgentRunUpdateManyWithoutIncidentNestedInput = {
+    create?: XOR<AgentRunCreateWithoutIncidentInput, AgentRunUncheckedCreateWithoutIncidentInput> | AgentRunCreateWithoutIncidentInput[] | AgentRunUncheckedCreateWithoutIncidentInput[]
+    connectOrCreate?: AgentRunCreateOrConnectWithoutIncidentInput | AgentRunCreateOrConnectWithoutIncidentInput[]
+    upsert?: AgentRunUpsertWithWhereUniqueWithoutIncidentInput | AgentRunUpsertWithWhereUniqueWithoutIncidentInput[]
+    createMany?: AgentRunCreateManyIncidentInputEnvelope
+    set?: AgentRunWhereUniqueInput | AgentRunWhereUniqueInput[]
+    disconnect?: AgentRunWhereUniqueInput | AgentRunWhereUniqueInput[]
+    delete?: AgentRunWhereUniqueInput | AgentRunWhereUniqueInput[]
+    connect?: AgentRunWhereUniqueInput | AgentRunWhereUniqueInput[]
+    update?: AgentRunUpdateWithWhereUniqueWithoutIncidentInput | AgentRunUpdateWithWhereUniqueWithoutIncidentInput[]
+    updateMany?: AgentRunUpdateManyWithWhereWithoutIncidentInput | AgentRunUpdateManyWithWhereWithoutIncidentInput[]
+    deleteMany?: AgentRunScalarWhereInput | AgentRunScalarWhereInput[]
+  }
+
+  export type AgentRunUncheckedUpdateManyWithoutIncidentNestedInput = {
+    create?: XOR<AgentRunCreateWithoutIncidentInput, AgentRunUncheckedCreateWithoutIncidentInput> | AgentRunCreateWithoutIncidentInput[] | AgentRunUncheckedCreateWithoutIncidentInput[]
+    connectOrCreate?: AgentRunCreateOrConnectWithoutIncidentInput | AgentRunCreateOrConnectWithoutIncidentInput[]
+    upsert?: AgentRunUpsertWithWhereUniqueWithoutIncidentInput | AgentRunUpsertWithWhereUniqueWithoutIncidentInput[]
+    createMany?: AgentRunCreateManyIncidentInputEnvelope
+    set?: AgentRunWhereUniqueInput | AgentRunWhereUniqueInput[]
+    disconnect?: AgentRunWhereUniqueInput | AgentRunWhereUniqueInput[]
+    delete?: AgentRunWhereUniqueInput | AgentRunWhereUniqueInput[]
+    connect?: AgentRunWhereUniqueInput | AgentRunWhereUniqueInput[]
+    update?: AgentRunUpdateWithWhereUniqueWithoutIncidentInput | AgentRunUpdateWithWhereUniqueWithoutIncidentInput[]
+    updateMany?: AgentRunUpdateManyWithWhereWithoutIncidentInput | AgentRunUpdateManyWithWhereWithoutIncidentInput[]
+    deleteMany?: AgentRunScalarWhereInput | AgentRunScalarWhereInput[]
   }
 
   export type FloatFieldUpdateOperationsInput = {
@@ -9154,12 +9308,26 @@ export namespace Prisma {
     connect?: UserWhereUniqueInput
   }
 
+  export type IncidentCreateNestedOneWithoutAgentRunsInput = {
+    create?: XOR<IncidentCreateWithoutAgentRunsInput, IncidentUncheckedCreateWithoutAgentRunsInput>
+    connectOrCreate?: IncidentCreateOrConnectWithoutAgentRunsInput
+    connect?: IncidentWhereUniqueInput
+  }
+
   export type UserUpdateOneRequiredWithoutAgentRunsNestedInput = {
     create?: XOR<UserCreateWithoutAgentRunsInput, UserUncheckedCreateWithoutAgentRunsInput>
     connectOrCreate?: UserCreateOrConnectWithoutAgentRunsInput
     upsert?: UserUpsertWithoutAgentRunsInput
     connect?: UserWhereUniqueInput
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutAgentRunsInput, UserUpdateWithoutAgentRunsInput>, UserUncheckedUpdateWithoutAgentRunsInput>
+  }
+
+  export type IncidentUpdateOneRequiredWithoutAgentRunsNestedInput = {
+    create?: XOR<IncidentCreateWithoutAgentRunsInput, IncidentUncheckedCreateWithoutAgentRunsInput>
+    connectOrCreate?: IncidentCreateOrConnectWithoutAgentRunsInput
+    upsert?: IncidentUpsertWithoutAgentRunsInput
+    connect?: IncidentWhereUniqueInput
+    update?: XOR<XOR<IncidentUpdateToOneWithWhereWithoutAgentRunsInput, IncidentUpdateWithoutAgentRunsInput>, IncidentUncheckedUpdateWithoutAgentRunsInput>
   }
 
   export type NestedStringFilter<$PrismaModel = never> = {
@@ -9328,6 +9496,7 @@ export namespace Prisma {
     severity: string
     status?: string
     createdAt?: Date | string
+    agentRuns?: AgentRunCreateNestedManyWithoutIncidentInput
   }
 
   export type IncidentUncheckedCreateWithoutUserInput = {
@@ -9337,6 +9506,7 @@ export namespace Prisma {
     severity: string
     status?: string
     createdAt?: Date | string
+    agentRuns?: AgentRunUncheckedCreateNestedManyWithoutIncidentInput
   }
 
   export type IncidentCreateOrConnectWithoutUserInput = {
@@ -9357,6 +9527,7 @@ export namespace Prisma {
     result?: NullableJsonNullValueInput | InputJsonValue
     status?: string
     createdAt?: Date | string
+    incident: IncidentCreateNestedOneWithoutAgentRunsInput
   }
 
   export type AgentRunUncheckedCreateWithoutUserInput = {
@@ -9367,6 +9538,7 @@ export namespace Prisma {
     result?: NullableJsonNullValueInput | InputJsonValue
     status?: string
     createdAt?: Date | string
+    incidentId: string
   }
 
   export type AgentRunCreateOrConnectWithoutUserInput = {
@@ -9436,6 +9608,7 @@ export namespace Prisma {
     status?: StringFilter<"AgentRun"> | string
     createdAt?: DateTimeFilter<"AgentRun"> | Date | string
     userId?: StringFilter<"AgentRun"> | string
+    incidentId?: StringFilter<"AgentRun"> | string
   }
 
   export type UserCreateWithoutIncidentsInput = {
@@ -9461,6 +9634,38 @@ export namespace Prisma {
   export type UserCreateOrConnectWithoutIncidentsInput = {
     where: UserWhereUniqueInput
     create: XOR<UserCreateWithoutIncidentsInput, UserUncheckedCreateWithoutIncidentsInput>
+  }
+
+  export type AgentRunCreateWithoutIncidentInput = {
+    id?: string
+    query: string
+    intent?: string | null
+    plan?: NullableJsonNullValueInput | InputJsonValue
+    result?: NullableJsonNullValueInput | InputJsonValue
+    status?: string
+    createdAt?: Date | string
+    user: UserCreateNestedOneWithoutAgentRunsInput
+  }
+
+  export type AgentRunUncheckedCreateWithoutIncidentInput = {
+    id?: string
+    query: string
+    intent?: string | null
+    plan?: NullableJsonNullValueInput | InputJsonValue
+    result?: NullableJsonNullValueInput | InputJsonValue
+    status?: string
+    createdAt?: Date | string
+    userId: string
+  }
+
+  export type AgentRunCreateOrConnectWithoutIncidentInput = {
+    where: AgentRunWhereUniqueInput
+    create: XOR<AgentRunCreateWithoutIncidentInput, AgentRunUncheckedCreateWithoutIncidentInput>
+  }
+
+  export type AgentRunCreateManyIncidentInputEnvelope = {
+    data: AgentRunCreateManyIncidentInput | AgentRunCreateManyIncidentInput[]
+    skipDuplicates?: boolean
   }
 
   export type UserUpsertWithoutIncidentsInput = {
@@ -9494,6 +9699,22 @@ export namespace Prisma {
     agentRuns?: AgentRunUncheckedUpdateManyWithoutUserNestedInput
   }
 
+  export type AgentRunUpsertWithWhereUniqueWithoutIncidentInput = {
+    where: AgentRunWhereUniqueInput
+    update: XOR<AgentRunUpdateWithoutIncidentInput, AgentRunUncheckedUpdateWithoutIncidentInput>
+    create: XOR<AgentRunCreateWithoutIncidentInput, AgentRunUncheckedCreateWithoutIncidentInput>
+  }
+
+  export type AgentRunUpdateWithWhereUniqueWithoutIncidentInput = {
+    where: AgentRunWhereUniqueInput
+    data: XOR<AgentRunUpdateWithoutIncidentInput, AgentRunUncheckedUpdateWithoutIncidentInput>
+  }
+
+  export type AgentRunUpdateManyWithWhereWithoutIncidentInput = {
+    where: AgentRunScalarWhereInput
+    data: XOR<AgentRunUpdateManyMutationInput, AgentRunUncheckedUpdateManyWithoutIncidentInput>
+  }
+
   export type UserCreateWithoutAgentRunsInput = {
     id?: string
     name: string
@@ -9517,6 +9738,31 @@ export namespace Prisma {
   export type UserCreateOrConnectWithoutAgentRunsInput = {
     where: UserWhereUniqueInput
     create: XOR<UserCreateWithoutAgentRunsInput, UserUncheckedCreateWithoutAgentRunsInput>
+  }
+
+  export type IncidentCreateWithoutAgentRunsInput = {
+    id?: string
+    title: string
+    description?: string | null
+    severity: string
+    status?: string
+    createdAt?: Date | string
+    user: UserCreateNestedOneWithoutIncidentsInput
+  }
+
+  export type IncidentUncheckedCreateWithoutAgentRunsInput = {
+    id?: string
+    title: string
+    description?: string | null
+    severity: string
+    status?: string
+    createdAt?: Date | string
+    userId: string
+  }
+
+  export type IncidentCreateOrConnectWithoutAgentRunsInput = {
+    where: IncidentWhereUniqueInput
+    create: XOR<IncidentCreateWithoutAgentRunsInput, IncidentUncheckedCreateWithoutAgentRunsInput>
   }
 
   export type UserUpsertWithoutAgentRunsInput = {
@@ -9550,6 +9796,37 @@ export namespace Prisma {
     incidents?: IncidentUncheckedUpdateManyWithoutUserNestedInput
   }
 
+  export type IncidentUpsertWithoutAgentRunsInput = {
+    update: XOR<IncidentUpdateWithoutAgentRunsInput, IncidentUncheckedUpdateWithoutAgentRunsInput>
+    create: XOR<IncidentCreateWithoutAgentRunsInput, IncidentUncheckedCreateWithoutAgentRunsInput>
+    where?: IncidentWhereInput
+  }
+
+  export type IncidentUpdateToOneWithWhereWithoutAgentRunsInput = {
+    where?: IncidentWhereInput
+    data: XOR<IncidentUpdateWithoutAgentRunsInput, IncidentUncheckedUpdateWithoutAgentRunsInput>
+  }
+
+  export type IncidentUpdateWithoutAgentRunsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    severity?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutIncidentsNestedInput
+  }
+
+  export type IncidentUncheckedUpdateWithoutAgentRunsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    severity?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    userId?: StringFieldUpdateOperationsInput | string
+  }
+
   export type IncidentCreateManyUserInput = {
     id?: string
     title: string
@@ -9567,6 +9844,7 @@ export namespace Prisma {
     result?: NullableJsonNullValueInput | InputJsonValue
     status?: string
     createdAt?: Date | string
+    incidentId: string
   }
 
   export type IncidentUpdateWithoutUserInput = {
@@ -9576,6 +9854,7 @@ export namespace Prisma {
     severity?: StringFieldUpdateOperationsInput | string
     status?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    agentRuns?: AgentRunUpdateManyWithoutIncidentNestedInput
   }
 
   export type IncidentUncheckedUpdateWithoutUserInput = {
@@ -9585,6 +9864,7 @@ export namespace Prisma {
     severity?: StringFieldUpdateOperationsInput | string
     status?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    agentRuns?: AgentRunUncheckedUpdateManyWithoutIncidentNestedInput
   }
 
   export type IncidentUncheckedUpdateManyWithoutUserInput = {
@@ -9604,6 +9884,7 @@ export namespace Prisma {
     result?: NullableJsonNullValueInput | InputJsonValue
     status?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    incident?: IncidentUpdateOneRequiredWithoutAgentRunsNestedInput
   }
 
   export type AgentRunUncheckedUpdateWithoutUserInput = {
@@ -9614,6 +9895,7 @@ export namespace Prisma {
     result?: NullableJsonNullValueInput | InputJsonValue
     status?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    incidentId?: StringFieldUpdateOperationsInput | string
   }
 
   export type AgentRunUncheckedUpdateManyWithoutUserInput = {
@@ -9624,6 +9906,51 @@ export namespace Prisma {
     result?: NullableJsonNullValueInput | InputJsonValue
     status?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    incidentId?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type AgentRunCreateManyIncidentInput = {
+    id?: string
+    query: string
+    intent?: string | null
+    plan?: NullableJsonNullValueInput | InputJsonValue
+    result?: NullableJsonNullValueInput | InputJsonValue
+    status?: string
+    createdAt?: Date | string
+    userId: string
+  }
+
+  export type AgentRunUpdateWithoutIncidentInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    query?: StringFieldUpdateOperationsInput | string
+    intent?: NullableStringFieldUpdateOperationsInput | string | null
+    plan?: NullableJsonNullValueInput | InputJsonValue
+    result?: NullableJsonNullValueInput | InputJsonValue
+    status?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutAgentRunsNestedInput
+  }
+
+  export type AgentRunUncheckedUpdateWithoutIncidentInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    query?: StringFieldUpdateOperationsInput | string
+    intent?: NullableStringFieldUpdateOperationsInput | string | null
+    plan?: NullableJsonNullValueInput | InputJsonValue
+    result?: NullableJsonNullValueInput | InputJsonValue
+    status?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    userId?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type AgentRunUncheckedUpdateManyWithoutIncidentInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    query?: StringFieldUpdateOperationsInput | string
+    intent?: NullableStringFieldUpdateOperationsInput | string | null
+    plan?: NullableJsonNullValueInput | InputJsonValue
+    result?: NullableJsonNullValueInput | InputJsonValue
+    status?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    userId?: StringFieldUpdateOperationsInput | string
   }
 
 
