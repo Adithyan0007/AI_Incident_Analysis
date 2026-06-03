@@ -1,7 +1,7 @@
 import type { FastifyInstance } from "fastify";
 import type { InvestigateIncidentBody } from "../schemas/investigate.incident.schema.js";
 import { log } from "node:console";
-
+import { GetGeminiRcaReport } from "./ai.service.js";
 export const InvestigateService = async (
   input: InvestigateIncidentBody,
   app: FastifyInstance,
@@ -112,6 +112,44 @@ export const InvestigateService = async (
   if (maxCpu > 80) {
     findings.push(`CPU usage reached ${maxCpu}%`);
   }
+
+  const structuredInvestigation = {
+    incident,
+    deployment,
+    findings,
+    evidence: {
+      errorLogs,
+      warnLogs,
+      latencyMetrics,
+      errorRateMetrics,
+      cpuMetrics,
+    },
+  };
+
+  const prompt = `
+You are an AI DevOps Incident Investigator.
+
+Analyze the following incident data and generate a professional Root Cause Analysis report.
+
+Rules:
+- Use only the provided data.
+- Do not invent facts.
+- If evidence is insufficient, say so.
+- Be concise but specific.
+
+Return the report in this structure:
+1. Incident Summary
+2. Likely Root Cause
+3. Evidence
+4. Impact
+5. Recommended Actions
+6. Confidence Level
+
+Incident Data:
+${JSON.stringify(structuredInvestigation, null, 2)}
+`;
+
+  const geminiReport = await GetGeminiRcaReport(prompt);
   const agentRunResult = await app.prisma.agentRun.create({
     data: {
       query: "Why did this incident occur?",
@@ -124,37 +162,21 @@ export const InvestigateService = async (
         "Fetch metrics after deployment",
         "Fetch logs after deployment",
         "Analyze findings",
-        "Generate RCA",
+        "Generate RCA with Gemini",
       ],
 
       result: {
-        incidentId: incident.id,
-        deploymentVersion: deployment.version,
-        findings,
-        recommendation: "Review latest deployment and inspect error logs.",
+        structuredInvestigation,
+        aiReport: geminiReport,
       },
 
       userId: loggedInUser,
-
       incidentId: incident.id,
     },
   });
   return {
-    result: {
-      incident,
-      deployment,
-      findings,
-      evidence: {
-        errorLogs,
-        warnLogs,
-        latencyMetrics,
-        errorRateMetrics,
-        cpuMetrics,
-      },
-      likelyRootCause:
-        "The latest deployment may have caused service degradation.",
-      recommendation:
-        "Review the latest deployment, inspect error logs, and consider rollback if the issue continues.",
-    },
+    agentRunId: agentRunResult.id,
+    structuredInvestigation,
+    aiReport: geminiReport,
   };
 };
