@@ -1,57 +1,38 @@
 import type { FastifyInstance } from "fastify";
 import type { InvestigateIncidentBody } from "../schemas/investigate.incident.schema.js";
-import { log } from "node:console";
 import { GetGeminiRcaReport } from "./ai.service.js";
+import { getIncidentTool } from "./tools/incident.tool.js";
+import { getDeploymentTool } from "./tools/deployment.tool.js";
+import { getMetricTool } from "./tools/metric.tool.js";
+import { getLogsTool } from "./tools/logs.tool.js";
+import { toolRunner } from "./tools/toolRunner.js";
 export const InvestigateService = async (
   input: InvestigateIncidentBody,
   app: FastifyInstance,
   loggedInUser: string,
 ) => {
-  const incident = await app.prisma.incident.findUnique({
-    where: {
-      id: input.incidentId,
-    },
-  });
+  const agentRunArray: any[] = [];
+  const incident = await toolRunner(agentRunArray, "getIncidentTool", () =>
+    getIncidentTool(input.incidentId, app),
+  );
   if (!incident) {
     throw new Error("Incident not found");
   }
+  const deployment = await toolRunner(agentRunArray, "getDeploymentTool", () =>
+    getDeploymentTool(incident.createdAt, app),
+  );
 
-  const deployment = await app.prisma.deployment.findFirst({
-    where: {
-      deployedAt: {
-        lte: incident.createdAt,
-      },
-    },
-    orderBy: {
-      deployedAt: "desc",
-    },
-  });
   if (!deployment) {
     throw new Error("No deployment found before this incident");
   }
+  const metrics = await toolRunner(agentRunArray, "getMetricTool", () =>
+    getMetricTool(deployment.service, deployment.deployedAt, app),
+  );
+  console.log(metrics);
 
-  const metrics = await app.prisma.metric.findMany({
-    where: {
-      timestamp: {
-        gte: deployment.deployedAt,
-      },
-      service: deployment.service,
-    },
-    orderBy: {
-      timestamp: "asc",
-    },
-  });
-  const logs = await app.prisma.log.findMany({
-    where: {
-      timestamp: {
-        gte: deployment.deployedAt,
-      },
-      service: deployment.service,
-    },
-    orderBy: {
-      timestamp: "asc",
-    },
-  });
+  const logs = await toolRunner(agentRunArray, "getLogTool", () =>
+    getLogsTool(deployment.service, deployment.deployedAt, app),
+  );
   const dividedLogs: Record<string, typeof logs> = {};
   const dividedMetrics: Record<string, typeof metrics> = {};
   logs.forEach((val) => {
@@ -112,10 +93,12 @@ export const InvestigateService = async (
   if (maxCpu > 80) {
     findings.push(`CPU usage reached ${maxCpu}%`);
   }
+  console.log(findings);
 
   const structuredInvestigation = {
     incident,
     deployment,
+    agentSteps: agentRunArray,
     findings,
     evidence: {
       errorLogs,
@@ -156,14 +139,7 @@ ${JSON.stringify(structuredInvestigation, null, 2)}
       intent: "incident_investigation",
       status: "completed",
 
-      plan: [
-        "Fetch incident",
-        "Find latest deployment before incident",
-        "Fetch metrics after deployment",
-        "Fetch logs after deployment",
-        "Analyze findings",
-        "Generate RCA with Gemini",
-      ],
+      plan: agentRunArray,
 
       result: {
         structuredInvestigation,

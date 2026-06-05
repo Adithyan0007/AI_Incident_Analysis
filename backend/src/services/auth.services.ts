@@ -23,7 +23,7 @@ export const loginUser = async (input: LoginInput, app: FastifyInstance) => {
       email: user.email,
       role: user.role,
     },
-    { expiresIn: "1h" },
+    { expiresIn: "7d" },
   );
 
   return {
