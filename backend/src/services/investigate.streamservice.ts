@@ -6,33 +6,62 @@ import { getDeploymentTool } from "./tools/deployment.tool.js";
 import { getMetricTool } from "./tools/metric.tool.js";
 import { getLogsTool } from "./tools/logs.tool.js";
 import { toolRunner } from "./tools/toolRunner.js";
-export const InvestigateService = async (
+export const InvestigateStreamService = async (
   input: InvestigateIncidentBody,
   app: FastifyInstance,
   loggedInUser: string,
+  sendEvent: any,
 ) => {
   const agentRunArray: any[] = [];
+  sendEvent({ step: "start", message: "Starting investigation" });
+
   const incident = await toolRunner(agentRunArray, "getIncidentTool", () =>
     getIncidentTool(input.incidentId, app),
   );
+
+  sendEvent({
+    step: "incident",
+    status: "success",
+    message: "Incident fetched successfully",
+  });
+
   if (!incident) {
     throw new Error("Incident not found");
   }
+
   const deployment = await toolRunner(agentRunArray, "getDeploymentTool", () =>
     getDeploymentTool(incident.createdAt, app),
   );
 
+  sendEvent({
+    step: "deployment",
+    status: "success",
+    message: "Latest deployment before incident found",
+  });
+
   if (!deployment) {
     throw new Error("No deployment found before this incident");
   }
+
   const metrics = await toolRunner(agentRunArray, "getMetricTool", () =>
     getMetricTool(deployment.service, deployment.deployedAt, app),
   );
-  console.log(metrics);
+
+  sendEvent({
+    step: "metrics",
+    status: "success",
+    message: `${metrics.length} metrics fetched and analyzed`,
+  });
 
   const logs = await toolRunner(agentRunArray, "getLogTool", () =>
     getLogsTool(deployment.service, deployment.deployedAt, app),
   );
+
+  sendEvent({
+    step: "logs",
+    status: "success",
+    message: `${logs.length} logs fetched and analyzed`,
+  });
   const dividedLogs: Record<string, typeof logs> = {};
   const dividedMetrics: Record<string, typeof metrics> = {};
   logs.forEach((val) => {
@@ -95,7 +124,12 @@ export const InvestigateService = async (
   if (maxCpu > 80) {
     findings.push(`CPU usage reached ${maxCpu}%`);
   }
-  console.log(findings);
+  sendEvent({
+    step: "findings",
+    status: "success",
+    message: "Investigation findings generated",
+    data: findings,
+  });
 
   const structuredInvestigation = {
     incident,
@@ -110,7 +144,11 @@ export const InvestigateService = async (
       cpuMetrics,
     },
   };
-
+  sendEvent({
+    step: "ai",
+    status: "running",
+    message: "Generating RCA report with Gemini",
+  });
   const prompt = `
 You are an AI DevOps Incident Investigator.
 
@@ -152,9 +190,15 @@ ${JSON.stringify(structuredInvestigation, null, 2)}
       incidentId: incident.id,
     },
   });
-  return {
-    agentRunId: agentRunResult.id,
-    structuredInvestigation,
-    aiReport: geminiReport,
-  };
+  sendEvent({
+    step: "complete",
+    status: "success",
+    message: "Investigation completed",
+    data: {
+      agentRunId: agentRunResult.id,
+      structuredInvestigation,
+      aiReport: geminiReport,
+    },
+  });
+  return;
 };
