@@ -20,7 +20,11 @@ export const app = Fastify({ logger: true });
 
 app.register(authenticate);
 app.register(cors, {
-  origin: true,
+  origin: "http://localhost:5173", // Explicitly trust your Vite frontend
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"],
+  exposedHeaders: ["Content-Type", "Authorization"], // CRITICAL: Allows browser stream readers to inspect response headers
+  credentials: true,
 });
 app.register(jwt, {
   secret: process.env.JWT_SECRET || "dev_secret",

@@ -12,6 +12,10 @@ export const InvestigateStreamController = async (
     "Content-Type": "text/event-stream",
     "Cache-Control": "no-cache",
     Connection: "keep-alive",
+    // ⬇️ ADD THESE MANUALLY HERE AS WELL ⬇️
+    "Access-Control-Allow-Origin": "http://localhost:5173",
+    "Access-Control-Allow-Credentials": "true",
+    "Access-Control-Allow-Headers": "Content-Type, Authorization",
   });
 
   const sendEvent = (data: unknown) => {
