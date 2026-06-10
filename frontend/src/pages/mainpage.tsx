@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { api } from "../utils/api";
+const API_URL = import.meta.env.VITE_API_URL;
 
 type Incident = {
   id: string;
@@ -33,7 +34,7 @@ export default function Dashboard() {
     setReport(null);
     setStreamSteps([]);
 
-    const response = await fetch("http://localhost:4000/investigate/stream", {
+    const response = await fetch(`${API_URL}/investigate/stream`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
