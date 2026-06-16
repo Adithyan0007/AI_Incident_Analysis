@@ -20,7 +20,7 @@ export const app = Fastify({ logger: true });
 
 app.register(authenticate);
 app.register(cors, {
-  origin: "http://localhost:5173", // Explicitly trust your Vite frontend
+  origin: ["http://localhost:5173", "https://incidentanalysis0.netlify.app"],
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
   allowedHeaders: ["Content-Type", "Authorization"],
   exposedHeaders: ["Content-Type", "Authorization"], // CRITICAL: Allows browser stream readers to inspect response headers
