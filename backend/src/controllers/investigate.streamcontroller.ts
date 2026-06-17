@@ -6,14 +6,24 @@ export const InvestigateStreamController = async (
   req: FastifyRequest<{ Body: InvestigateIncidentBody }>,
   reply: FastifyReply,
 ) => {
-  console.log("helloooooooo");
+  const allowedOrigins = [
+    "http://localhost:5173",
+    "https://incidentanalysis0.netlify.app", // Your additional origin
+  ];
 
+  // 2. Get the origin from the incoming request
+  const requestOrigin: any = req.headers.origin;
+
+  // 3. Check if the request origin is in your allowed list
+  const currentOrigin = allowedOrigins.includes(requestOrigin)
+    ? requestOrigin
+    : allowedOrigins[0]; // Fallback to your default
   reply.raw.writeHead(200, {
     "Content-Type": "text/event-stream",
     "Cache-Control": "no-cache",
     Connection: "keep-alive",
     // ⬇️ ADD THESE MANUALLY HERE AS WELL ⬇️
-    "Access-Control-Allow-Origin": "http://localhost:5173",
+    "Access-Control-Allow-Origin": currentOrigin,
     "Access-Control-Allow-Credentials": "true",
     "Access-Control-Allow-Headers": "Content-Type, Authorization",
   });
